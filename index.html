@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>For My Babygurl 💗</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: pink;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      transition: background 1s ease-in-out;
+    }
+
+    #welcomeBorder {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      animation: slideUp 3s forwards;
+      z-index: 20;
+    }
+
+    @keyframes slideUp {
+      0% { transform: translateY(100%); opacity: 1; }
+      80% { transform: translateY(0); opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+
+    #banner {
+      position: absolute;
+      top: 5%;
+      width: 60%;
+      display: none;
+      z-index: 10;
+    }
+
+    #birthdayText {
+      position: absolute;
+      top: 20%;
+      font-size: 36px;
+      font-weight: bold; 
+      color: white;
+      text-shadow: 2px 2px 8px hotpink, -2px -2px 8px deeppink;
+      display: none;
+      z-index: 11;
+      animation: popOut 1s ease-out forwards;
+    }
+
+    @keyframes popOut {
+      0% { transform: scale(0); opacity: 0; }
+      80% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    #cake {
+      position: absolute;
+      bottom: 10%;
+      width: 200px;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .bulb {
+      position: absolute;
+      top: 5%;
+      width: 60px;
+      display: none;
+      animation: blink 1s infinite alternate;
+      z-index: 9;
+    }
+
+    @keyframes blink {
+      0% { opacity: 0.2; }
+      100% { opacity: 1; }
+    }
+
+    .balloon {
+      position: absolute;
+      bottom: -150px;
+      width: 80px;
+      animation: floatUp 6s linear forwards;
+      z-index: 5;
+    }
+
+    @keyframes floatUp {
+      from { transform: translateY(100vh); opacity: 1; }
+      to { transform: translateY(-120vh); opacity: 0; }
+    }
+
+    #specialBalloon {
+      position: absolute;
+      width: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+      z-index: 8;
+      animation: floatPause 8s linear forwards;
+      cursor: pointer;
+    }
+
+    @keyframes floatPause {
+      0% { bottom: -150px; opacity: 1; }
+      70% { bottom: 45%; opacity: 1; }
+      100% { bottom: 45%; opacity: 1; }
+    }
+
+    .confetti {
+      position: absolute;
+      opacity: 0.8;
+      animation: fall linear forwards;
+      z-index: 4;
+    }
+
+    @keyframes fall {
+      from { transform: translateY(-50px) rotate(0deg); }
+      to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    #messageBox {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px 30px;
+      border-radius: 15px;
+      font-size: 1.3em;
+      font-family: Arial, sans-serif;
+      color: #ff1493;
+      text-align: center;
+      display: none;
+      z-index: 30;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <img id="welcomeBorder" src="assets/Balloon-Border.png">
+
+  <img id="banner" src="assets/banner.png">
+  <div id="birthdayText">Happpppy Birthdaaaayyyyy Babyy.. mwwaaahhhh 💖</div>
+  <img id="cake" src="assets/cake128.png">
+
+  <!-- bulbs -->
+  <img class="bulb" src="assets/bulb_red.png" style="left:25%">
+  <img class="bulb" src="assets/bulb_blue.png" style="left:35%">
+  <img class="bulb" src="assets/bulb_green.png" style="left:45%">
+  <img class="bulb" src="assets/bulb_yellow.png" style="left:55%">
+  <img class="bulb" src="assets/bulb_orange.png" style="left:65%">
+  <img class="bulb" src="assets/bulb_pink.png" style="left:75%">
+
+  <img id="specialBalloon" src="assets/b7.png">
+  <div id="messageBox">
+   I know this little website isn’t perfect, but I built it with all my love for you.
+    I tried my best (with a little ChatGPT help 👉🏽👈🏽🥲💗). Please accept this as your
+     birthday gift🥲. You mean the world to me, and I love you so much 💖
+  </div>
+
+  <audio id="bgMusic" src="assets/youloveme.mp3"></audio>
+
+  <script>
+    const cake = document.getElementById('cake');
+    const banner = document.getElementById('banner');
+    const bulbs = document.querySelectorAll('.bulb');
+    const birthdayText = document.getElementById('birthdayText');
+    const music = document.getElementById('bgMusic');
+    const specialBalloon = document.getElementById('specialBalloon');
+    const messageBox = document.getElementById('messageBox');
+    let celebrationStarted = false;
+
+    // preload balloon images
+    const balloonImgs = [];
+    for (let i = 1; i <= 6; i++) {
+      balloonImgs.push(`assets/b${i}.png`);
+    }
+
+    function triggerCelebration() {
+      // balloons
+      for (let i = 0; i < 12; i++) {
+        const balloon = document.createElement("img");
+        balloon.src = balloonImgs[Math.floor(Math.random()*balloonImgs.length)];
+        balloon.className = "balloon";
+        balloon.style.left = Math.random() * (window.innerWidth - 100) + "px";
+        balloon.style.animationDuration = (4 + Math.random()*3) + "s";
+        document.body.appendChild(balloon);
+
+        setTimeout(() => balloon.remove(), 7000);
+      }
+
+      // confetti
+      const shapes = ["⭐","💖","❇️","✨","⬤"];
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.innerHTML = shapes[Math.floor(Math.random()*shapes.length)];
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.top = "-20px";
+        confetti.style.color = ["#ff1493","#ffd700","#00ffff","#ff4500","white"][Math.floor(Math.random()*5)];
+        confetti.style.animation = `fall ${2 + Math.random()*3}s linear forwards`;
+        confetti.style.fontSize = (12 + Math.random()*20) + "px";
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 6000);
+      }
+    }
+
+    setTimeout(() => {
+      banner.style.display = "block";
+      cake.style.display = "block";
+    }, 3000);
+
+    cake.addEventListener("click", () => {
+      if (celebrationStarted) return;
+      celebrationStarted = true;
+
+      // bg change
+      document.body.style.background = "magenta";
+
+      // banner -> bulbs
+      banner.style.display = "none";
+      bulbs.forEach(b => b.style.display = "block");
+
+      // music play
+      music.play().catch(()=>{});
+
+      // text pop
+      birthdayText.style.display = "block";
+
+      // start balloons + confetti
+      triggerCelebration();
+
+      // after 6s show special balloon
+      setTimeout(() => {
+        specialBalloon.style.display = "block";
+      }, 6000);
+
+      // allow repeated taps for more celebration
+      document.body.addEventListener("click", () => {
+        if (messageBox.style.display === "none") {
+          triggerCelebration();
+        }
+      });
+    });
+
+    specialBalloon.addEventListener("click", () => {
+      messageBox.style.display = "block";
+    });
+  </script>
+</body>
+</html>
